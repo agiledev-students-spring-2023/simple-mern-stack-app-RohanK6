@@ -40,6 +40,32 @@ app.get('/messages', async (req, res) => {
   }
 })
 
+app.get('/about-us', (req, res) => {
+  const aboutUsHeader = 'About Us';
+  const aboutUsText = `Hi! My name is Rohan and I'm a senior at NYU majoring in Computer Science and minoring in Math at CAS. I'm originally from Long Island,
+                           but currently live in Lafayette Hall on campus. When the weather is nice, I like playing either basketball or football,
+                           and I also enjoy playing a variety of video games. Growing up, I've always been interested in reading Fantasy books, so some of my favorite series have included: Harry Potter,
+                           Percy Jackson (and most of the Rick Riordan series), and Lorien Legacies. I'm looking forward to taking this course and working on a pretty fun project`;
+  const aboutUsPhoto = 'https://media.licdn.com/dms/image/C4E03AQFzglNQB54A3Q/profile-displayphoto-shrink_200_200/0/1627586617034?e=1681344000&v=beta&t=g5TsKGB3VE2RcXmaVsTT4-3zy-e81iDb8U0oY2gAZrk';
+  const aboutUs = {
+    header: aboutUsHeader,
+    text: aboutUsText,
+    photo: aboutUsPhoto
+  }
+  try {
+    res.json({
+      aboutUs: aboutUs,
+      status: 'all good',
+    })
+  } catch (err) {
+    console.error(err)
+    res.status(400).json({
+      error: err,
+      status: 'failed to retrieve about us from the database',
+    })
+  }
+})
+
 // a route to handle fetching a single message by its id
 app.get('/messages/:messageId', async (req, res) => {
   // load all messages from database

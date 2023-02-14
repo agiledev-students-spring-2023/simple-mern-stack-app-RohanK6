@@ -1,5 +1,7 @@
 import './AboutUs.css';
-import authorPhoto from './IMG_7001.JPG';
+import { useState, useEffect } from 'react'
+import axios from 'axios'
+import loadingIcon from './loading.gif'
 
 /**
  * A React component that represents the About Us page.
@@ -7,17 +9,36 @@ import authorPhoto from './IMG_7001.JPG';
  */
 
 const AboutUs = () => {
+    const [aboutUs, setAboutUs] = useState({})
+    const [loaded, setLoaded] = useState(false)
+    const [error, setError] = useState('')
+
+
+    useEffect(() => {
+        axios
+            .get(`${process.env.REACT_APP_SERVER_HOSTNAME}/about-us`)
+            .then(response => {
+                const aboutUsFromBackEnd = response.data.aboutUs
+                setAboutUs(aboutUsFromBackEnd)
+            })
+            .catch(err => {
+                setError(err)
+            })
+            .finally(() => {
+                setLoaded(true)
+            })
+    }, [])
+
     return (
-       // return 3 paragraphsof text, including an About Us header and an image
         <>
-            <h1>About Us</h1>
-            <img className="authorPhoto" src={authorPhoto} />
+            <h1>{aboutUs.header}</h1>
+            
+            {error && <p className="AboutUs-error">{error}</p>}
+            {!loaded && <img src={loadingIcon} alt="loading" />}
+            
+            <img className="authorPhoto" src={aboutUs.photo} />
             <p className="aboutText">
-                Hi! My name is Rohan and I'm a senior at NYU majoring in Computer Science and minoring in Math at CAS. I'm originally from Long Island,
-                but currently live in Lafayette Hall on campus. When the weather is nice, I like playing either basketball or football,
-                and I also enjoy playing a variety of video games. Growing up, I've always been interested in reading Fantasy books, so some of my favorite series have included: Harry Potter,
-                Percy Jackson (and most of the Rick Riordan series), and Lorien Legacies. I'm looking forward to taking this course and working on
-                a pretty fun project!
+                {aboutUs.text}
             </p>
         </>
     )
