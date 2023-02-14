@@ -1,0 +1,12 @@
+img.authorPhoto {
+  width: 250px;
+  height: 250px;
+  border-radius: 50%;
+  object-fit: cover;
+  padding: 10px;
+}
+
+p.aboutText {
+    text-align: left;
+    padding: 10px;
+}
